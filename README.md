@@ -1,37 +1,71 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Notify Me Application
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+The **Notify Me** application is a robust notification and messaging system built using **NestJS** and **TypeScript**, adhering to SOLID principles. It incorporates **Socket.IO** for real-time chat, **JWT** for authentication, and **MongoDB** with **Mongoose** for data storage.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Features
 
-## Project setup
+- **User Authentication:** Secure sign-up and login with JWT.
+- **Real-Time Chat:** Interactive chat using Socket.IO.
+- **User Management:** CRUD operations for users.
+- **Contact Management:** Register and manage contacts with full CRUD functionality.
+- **Scalable Design:** Built with SOLID principles for maintainability and scalability.
 
-```bash
-$ npm install
+---
+
+## Project Structure
+
+```plaintext
+src/
+├── auth/               # Authentication module (JWT, Guards, Strategies)
+├── chat/               # Chat module (Socket.IO integration)
+├── contacts/           # Contact management (CRUD for contacts)
+├── users/              # User management (CRUD for users)
+├── common/             # Shared utilities and interceptors
+├── app.module.ts       # Root module
+├── main.ts             # Entry point
 ```
 
+---
+
+## Prerequisites
+
+- **Node.js** (>= 18.x)
+- **MongoDB** (Database connection)
+- **npm** or **yarn**
+
+---
+
+## Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone <repository-url>
+   cd notify-me
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Set up environment variables by creating a `.env` file in the root directory:
+
+   ```env
+   PORT=3000
+   MONGO_URI=mongodb://localhost:27017/NotifyME
+   SECRET_KEY=your_jwt_secret
+   ```
+
+4. Start the development server:
+
+   ```bash
+   npm run start:dev
+   ```
 ## Compile and run the project
 
 ```bash
@@ -56,44 +90,108 @@ $ npm run test:e2e
 
 # test coverage
 $ npm run test:cov
-```
+
+---
+
+## API Endpoints
+
+### User Endpoints
+
+| Method | Endpoint            | Description          |
+|--------|---------------------|----------------------|
+| POST   | `/auth/signup`      | Register a new user  |
+| POST   | `/auth/login`       | User login           |
+| GET    | `/users`            | Get all users        |
+| GET    | `/users/:id`        | Get user by ID       |
+| PUT    | `/users/:id`        | Update user details  |
+| DELETE | `/users/:id`        | Delete a user        |
+
+### Contact Endpoints
+
+| Method | Endpoint            | Description                |
+|--------|---------------------|----------------------------|
+| POST   | `/contacts`         | Create a new contact       |
+| GET    | `/contacts`         | Get all contacts           |
+| GET    | `/contacts/:id`     | Get contact by ID          |
+| PUT    | `/contacts/:id`     | Update contact details     |
+| DELETE | `/contacts/:id`     | Delete a contact           |
+
+### Chat Endpoints
+
+| Method | Endpoint            | Description          |
+|--------|---------------------|----------------------|
+| GET    | `/chat`             | Establish socket connection |
+
+---
+
+## Modules and Key Features
+
+### Authentication Module (`auth`)
+
+- **JWT Authentication**
+- **Guards and Interceptors**
+
+### Chat Module (`chat`)
+
+- Real-time communication with **Socket.IO**
+- Handles messaging and broadcasting events
+
+### User Module (`users`)
+
+- User entity with validation
+- CRUD operations
+
+### Contact Module (`contacts`)
+
+- CRUD operations for managing contacts
+- Mongoose schemas and validation
+
+---
 
 ## Deployment
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+1. Build the application:
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+   ```bash
+   npm run build
+   ```
 
-```bash
-$ npm install -g mau
-$ mau deploy
-```
+2. Start the application in production:
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+   ```bash
+   npm run start:prod
+   ```
 
-## Resources
+---
 
-Check out a few resources that may come in handy when working with NestJS:
+## Technologies Used
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+- **NestJS**
+- **TypeScript**
+- **MongoDB** with **Mongoose**
+- **Socket.IO**
+- **JWT** for authentication
+---
 
-## Support
+## SOLID Principles in Action
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- **Single Responsibility Principle:** Separate modules for users, contacts, and chat.
+- **Open/Closed Principle:** Extensible guards and strategies.
+- **Liskov Substitution Principle:** Interfaces for services and repositories.
+- **Interface Segregation Principle:** Lightweight, focused interfaces.
+- **Dependency Inversion Principle:** Services depend on abstractions.
 
-## Stay in touch
+---
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Contact
 
-## License
+For queries or support, please reach out to:
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- **Email:** karimabdhussein@gmail.com
+<!-- - **Website:** [Notify Me](https://notifyme.com) -->
+
+
+
+
+
+
