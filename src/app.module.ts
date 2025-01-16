@@ -13,7 +13,7 @@ import { ActiveUsersModule } from './active-users/active-users.module';
     ChatModule,
     UsersModule,
     ConfigModule.forRoot({ isGlobal: true }),
-    MongooseModule.forRoot(process.env.MONGO_URI),
+    MongooseModule.forRoot('mongodb+srv://karim:09912.45@cluster0.o0w7c.mongodb.net/NotifyME?retryWrites=true&w=majority&appName=Cluster0'),
     AuthModule,
     MessagesModule,
     ActiveUsersModule,
