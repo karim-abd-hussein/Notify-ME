@@ -5,7 +5,12 @@ import { AuthService } from 'src/auth/auth.service';
 import Payload from 'src/auth/interfaces/payload.interface';
 import { MessagesService } from 'src/messages/messages.service';
 
-@WebSocketGateway() // Default: Port 3000
+@WebSocketGateway({
+  cors: {
+    origin: '*', // Replace '*' with your client URL for better security
+    methods: ['GET,HEAD,PUT,PATCH,POST,DELETE'], // Allowed HTTP methods
+  },
+}) // Default: Port 3000
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   constructor(
