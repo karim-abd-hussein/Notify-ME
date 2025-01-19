@@ -26,6 +26,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async handleConnection(client: Socket): Promise<void> {
     try {
       const token = client.handshake.headers['authorization'];
+      console.log(token);
       if (!token) {
         client.emit('error', { message: 'Token is required' });
         client.disconnect();
