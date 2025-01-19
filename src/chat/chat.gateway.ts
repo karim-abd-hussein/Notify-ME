@@ -7,8 +7,8 @@ import { MessagesService } from 'src/messages/messages.service';
 
 @WebSocketGateway({
   cors: {
-    origin: '*', // Replace '*' with your client URL for better security
-    methods: ['GET,POST'], // Allowed HTTP methods
+    origin: 'http://localhost:5173', 
+    methods: ['GET,POST'], 
   },
   transports: ['websocket'], 
 }) // Default: Port 3000
@@ -34,7 +34,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       }
 
       const payload: Payload = await this.authService.verifyToken(token);
-
       const messages = await this.messagesServices.getReceiverMessages(payload.phone);
       messages.forEach(message => {
         client.emit('message', { from: message.from, content: message.content });
@@ -58,6 +57,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('message')
   handleMessage(client: Socket, payload: { to: string; content: string }): void {
+    console.log(payload);
     const from = this.activeUsers.getPhone(client);
     const to = this.activeUsers.getClientId(payload.to);
 
