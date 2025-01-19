@@ -8,8 +8,9 @@ import { MessagesService } from 'src/messages/messages.service';
 @WebSocketGateway({
   cors: {
     origin: '*', // Replace '*' with your client URL for better security
-    methods: ['GET,HEAD,PUT,PATCH,POST,DELETE'], // Allowed HTTP methods
+    methods: ['GET,POST'], // Allowed HTTP methods
   },
+  transports: ['websocket'], 
 }) // Default: Port 3000
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
