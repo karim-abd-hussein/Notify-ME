@@ -17,11 +17,12 @@ The **Notify Me** application is a robust notification and messaging system buil
 
 ## Project Structure
 
-```plaintext
+```
 src/
 ├── auth/               # Authentication module (JWT, Guards, Strategies)
+├── active-users/       # manage active users
 ├── chat/               # Chat module (Socket.IO integration)
-├── contacts/           # Contact management (CRUD for contacts)
+├── messages/           # messages management (CRUD for messages)
 ├── users/              # User management (CRUD for users)
 ├── common/             # Shared utilities and interceptors
 ├── app.module.ts       # Root module
@@ -43,7 +44,7 @@ src/
 1. Clone the repository:
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/karim-abd-hussein/Notify-ME
    cd notify-me
    ```
 
@@ -97,30 +98,28 @@ $ npm run test:cov
 
 ### User Endpoints
 
-| Method | Endpoint            | Description          |
-|--------|---------------------|----------------------|
-| POST   | `/auth/signup`      | Register a new user  |
-| POST   | `/auth/login`       | User login           |
-| GET    | `/users`            | Get all users        |
-| GET    | `/users/:id`        | Get user by ID       |
-| PUT    | `/users/:id`        | Update user details  |
-| DELETE | `/users/:id`        | Delete a user        |
+| Method | Endpoint               | Description          |
+|--------|------------------------|----------------------|
+| POST   | `/users`               | Register a new user  |
+| POST   | `/users/log-in`        | User login           |
+| GET    | `/users/:phone`        | Get user by phone    |
+| PUT    | `/users/:phone`        | Update user details  |
+| DELETE | `/users/:phone`        | Delete a user        |
 
 ### Contact Endpoints
 
-| Method | Endpoint            | Description                |
-|--------|---------------------|----------------------------|
-| POST   | `/contacts`         | Create a new contact       |
-| GET    | `/contacts`         | Get all contacts           |
-| GET    | `/contacts/:id`     | Get contact by ID          |
-| PUT    | `/contacts/:id`     | Update contact details     |
-| DELETE | `/contacts/:id`     | Delete a contact           |
+| Method | Endpoint             | Description                |
+|--------|----------------------|----------------------------|
+| PUT    |`/users/add-contact`  | Create a new contact       |
+| GET    | `/users/get`         | Get all contacts           |
+| PUT    | `/users/:phone`      | Update contact details     |
+| DELETE | `/users/:phone`      | Delete a contact           |
 
 ### Chat Endpoints
 
-| Method | Endpoint            | Description          |
-|--------|---------------------|----------------------|
-| GET    | `/chat`             | Establish socket connection |
+| Method | Endpoint            | Description                 |
+|--------|---------------------|-----------------------------|
+| GET    | `/`                 | Establish socket connection |
 
 ---
 
@@ -129,12 +128,10 @@ $ npm run test:cov
 ### Authentication Module (`auth`)
 
 - **JWT Authentication**
-- **Guards and Interceptors**
 
 ### Chat Module (`chat`)
 
 - Real-time communication with **Socket.IO**
-- Handles messaging and broadcasting events
 
 ### User Module (`users`)
 
