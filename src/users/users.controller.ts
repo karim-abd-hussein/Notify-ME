@@ -6,6 +6,7 @@ import ContactDTO from './dtos/contact.dto';
 import { Request } from 'express';
 import { User } from './schemas/user.schema';
 import userDOT from './dtos/user.dto';
+import StoredMessage from './dtos/storedMessage.dto';
 
 @Controller('users')
 export class UsersController {
@@ -81,5 +82,40 @@ async remove(@Req() req:Request):Promise<{message:string}>{
 return {message:'Thanks for using Notify ME'};
 }
 
+
+// @Post('messages/from')
+// async pushFromMessage(@Body() storedMessage:StoredMessage,@Req() req:Request){
+
+// const user= await this.usersService.pushFromMessage(storedMessage,req);
+
+// return {message:"Message added",user};
+
+// }
+
+// @Post('/messages/to')
+// async pushToMessage(@Body() storedMessage:StoredMessage,@Req() req:Request){
+
+// const user= await this.usersService.pushToMessage(storedMessage,req);
+
+// return {message:"Message added",user};
+
+// }
+
+@Get('messages/from/:phone')
+async getFromMessages(@Param() validatePhoneDTO:ValidatePhone,@Req() req:Request){
+
+    const messages=await this.usersService.getFromMessages(validatePhoneDTO.phone,req);
+
+    return {message:"Retrived Messages",messages}
+}
+
+
+@Get('messages/to/:phone')
+async getToMessages(@Param() validatePhoneDTO:ValidatePhone,@Req() req:Request){
+
+    const messages=await this.usersService.getToMessages(validatePhoneDTO.phone,req);
+
+    return {message:"Retrived Messages",messages}
+}
 
 }

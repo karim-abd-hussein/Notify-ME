@@ -7,6 +7,7 @@ import Payload  from 'src/auth/interfaces/payload.interface';
 import { IUser, IUserInfo } from './interfaces/user.interface';
 import IContact from './interfaces/contact.interface';
 import { Request } from 'express';
+import { IStoredMessage } from './interfaces/storedMessages.interface';
 
 @Injectable()
 export class UsersService {
@@ -200,6 +201,102 @@ public async remove(req:Request): Promise<void> {
   } catch (error) {
     
     throw new InternalServerErrorException("An error occurred while update the new info.")
+  }
+
+ }
+
+ async pushFromMessage(message:IStoredMessage,phone:string){
+
+
+  try {
+
+    
+    const updateUser=await this.userModel.findOneAndUpdate(
+      {phone},
+      { $push: {  messagesFrom: message } },
+      { new: true });
+
+      // return updateUser
+    
+  } catch (error) {
+    throw new InternalServerErrorException('An error occurred while adding the from message.');
+  }
+
+ }
+
+ async pushToMessage(message:IStoredMessage,phone:string){
+
+  try {
+
+    const updateUser=await this.userModel.findOneAndUpdate(
+      {phone},
+      { $push: {  messagesTo: message } },
+      { new: true });
+
+      // return updateUser
+    
+  } catch (error) {
+    throw new InternalServerErrorException('An error occurred while adding the To message.');
+  }
+
+ }
+
+ async getFromMessages(from:string,req:Request){
+
+  const payload:Payload= await this.authService.extractTokenAndVerify(req);
+
+  try {
+
+    // Retrieve messages that match the phone number
+    const user = await this.userModel.findOne(
+      { phone: payload.phone }, // Find the user by their phone
+      { messagesTo: 1 } // Select only the `messagesTo` field
+    );
+
+    if (!user || !user.messagesTo) {
+      throw new NotFoundException('No messages found for the specified user.');
+    }
+
+    const filteredMessages= user.messagesTo.filter((message:IStoredMessage) => message.phone === from);
+
+    return filteredMessages;
+
+  } catch (error) {
+    throw error instanceof NotFoundException
+    ?
+    error
+    : 
+    new InternalServerErrorException('An error occurred while adding the To message.');
+  }
+
+ }
+
+ async getToMessages(from:string,req:Request){
+
+  const payload:Payload= await this.authService.extractTokenAndVerify(req);
+
+  try {
+
+    // Retrieve messages that match the phone number
+    const user = await this.userModel.findOne(
+      { phone: payload.phone }, // Find the user by their phone
+      { messagesFrom: 1 } 
+    );
+
+    if (!user || !user.messagesFrom) {
+      throw new NotFoundException('No messages found for the specified user.');
+    }
+
+    const filteredMessages = user.messagesFrom.filter((message:IStoredMessage) => message.phone === from);
+
+    return filteredMessages;
+
+  } catch (error) {
+    throw error instanceof NotFoundException
+    ?
+    error
+    : 
+    new InternalServerErrorException('An error occurred while retrive messages.');
   }
 
  }

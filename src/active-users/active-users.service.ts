@@ -12,8 +12,8 @@ export class ActiveUsersService {
    
        this.usersOnlineKeyValue.set(client.id,phone);
        this.usersOnlineValueKey.set(phone,client.id);
-   
-     }
+ 
+        }
    
      public removeUser(client:Socket){
    

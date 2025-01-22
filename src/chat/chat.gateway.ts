@@ -4,6 +4,7 @@ import { ActiveUsersService } from 'src/active-users/active-users.service';
 import { AuthService } from 'src/auth/auth.service';
 import Payload from 'src/auth/interfaces/payload.interface';
 import { MessagesService } from 'src/messages/messages.service';
+import { UsersService } from 'src/users/users.service';
 
 @WebSocketGateway({
   cors: {
@@ -18,6 +19,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private readonly activeUsers: ActiveUsersService,
     private readonly messagesServices: MessagesService,
     private readonly authService: AuthService,
+    private readonly usersService:UsersService
   ) {}
 
   @WebSocketServer()
@@ -32,7 +34,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         client.disconnect();
         return;
       }
-
       const payload: Payload = await this.authService.verifyToken(token);
       const messages = await this.messagesServices.getReceiverMessages(payload.phone);
       messages.forEach(message => {
@@ -56,10 +57,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('message')
-  handleMessage(client: Socket, payload: { to: string; content: string }): void {
-    console.log(payload);
+   handleMessage(client: Socket, payload: { to: string; content: string }):void {
     const from = this.activeUsers.getPhone(client);
     const to = this.activeUsers.getClientId(payload.to);
+    // the reciver
+   this.usersService.pushFromMessage({phone:from,content:payload.content},payload.to);
+    // the sender
+     this.usersService.pushToMessage({phone:payload.to,content:payload.content},from);
 
     if (to) {
       this.server.to(to).emit('message', { from, content: payload.content });
